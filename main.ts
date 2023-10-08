@@ -50,6 +50,7 @@ function mvStars () {
         }
     }
 }
+let station = 0
 let docked = false
 let speed = 0
 let Ship = 0
@@ -58,8 +59,20 @@ Ship = 2
 speed = 1
 docked = false
 basic.forever(function () {
+    basic.pause(randint(3, 7) * 1000)
+    docked = true
+    station = randint(0, 2)
+    for (let index = 0; index <= 2; index++) {
+        led.plotBrightness(4, index + station, 240)
+    }
+})
+basic.forever(function () {
     if (led.pointBrightness(0, Ship) == 200) {
         game.removeLife(1)
+    }
+    if (led.pointBrightness(0, Ship) == 240) {
+        game.setLife(5)
+        docked = false
     }
     led.plot(0, Ship)
     basic.pause(150 / speed)
