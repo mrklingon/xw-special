@@ -40,6 +40,15 @@ function mkStars () {
         }
     }
 }
+input.onGesture(Gesture.Shake, function () {
+    if (droid) {
+        music.play(music.tonePlayable(196, music.beat(BeatFraction.Half)), music.PlaybackMode.UntilDone)
+        droid = false
+    } else {
+        music.play(music.tonePlayable(784, music.beat(BeatFraction.Half)), music.PlaybackMode.UntilDone)
+        droid = true
+    }
+})
 input.onGesture(Gesture.TiltRight, function () {
     speed = speed * 1.25
 })
@@ -51,19 +60,29 @@ function mvStars () {
     }
 }
 let station = 0
+let droid = false
 let docked = false
 let speed = 0
 let Ship = 0
+images.createBigImage(`
+    . . # # # . # . # .
+    . . . # . . . . . .
+    # # # # # . . . # .
+    . . . # . . . . . .
+    . . # # # . . # . .
+    `).showImage(0)
 game.setLife(5)
 Ship = 2
 speed = 1
 docked = false
+droid = false
 basic.forever(function () {
     if (led.pointBrightness(0, Ship) == 200) {
         game.removeLife(1)
     }
     if (led.pointBrightness(0, Ship) == 240) {
         game.setLife(5)
+        docked = false
     }
     led.plot(0, Ship)
     basic.pause(150 / speed)
@@ -76,5 +95,12 @@ basic.forever(function () {
     station = randint(0, 2)
     for (let index = 0; index <= 2; index++) {
         led.plotBrightness(4, index + station, 240)
+    }
+})
+basic.forever(function () {
+    if (droid) {
+        Laser()
+        Ship = randint(0, 4)
+        basic.pause(200)
     }
 })
