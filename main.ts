@@ -81,7 +81,7 @@ basic.forever(function () {
         game.removeLife(1)
     }
     if (led.pointBrightness(0, Ship) == 240) {
-        game.setLife(5)
+        game.setLife(2)
         docked = false
     }
     led.plot(0, Ship)
